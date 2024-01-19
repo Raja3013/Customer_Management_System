@@ -47,5 +47,4 @@ public class CustomerControllerTest {
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
         assertEquals(processedCustomer, responseEntity.getBody());
     }
-
 }

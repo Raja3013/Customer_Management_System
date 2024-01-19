@@ -1,10 +1,3 @@
-/**
- * 
- */
-/**
- * @author User
- *
- */
 package com.customer.management.system.Enum;
 
 public enum Occupation {

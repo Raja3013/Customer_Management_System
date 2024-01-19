@@ -81,6 +81,4 @@ public class CustomerEntity {
 	public void setCustomerGroup(String customerGroup) {
 		this.customerGroup = customerGroup;
 	}
-
-	// Constructors, getters, setters
 }
