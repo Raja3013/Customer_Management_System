@@ -19,11 +19,19 @@ public class CustomerController {
 	private CustomerService customerService;
 
 	@PostMapping
-	public ResponseEntity<CustomerDto> createCustomer(@RequestBody CustomerDto customerDto) {
-		
+	public ResponseEntity<Object> createCustomer(@RequestBody CustomerDto customerDto) {
+        try {
 		// Process customer details before saving to the database
 		CustomerDto processedCustomer = customerService.processCustomerDetails(customerDto);
-		// Return the saved customer
 		return ResponseEntity.status(HttpStatus.CREATED).body(processedCustomer);
+
+        }catch (IllegalArgumentException e) {
+            // Handle specific validation exceptions
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            // Handle other unexpected exceptions
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
+        }
+   
 	}
 }

@@ -17,34 +17,34 @@ import com.customer.management.system.service.CustomerService;
 
 public class CustomerControllerTest {
 
-    @Mock
-    private CustomerService customerService;
+	@Mock
+	private CustomerService customerService;
 
-    @InjectMocks
-    private CustomerController customerController;
+	@InjectMocks
+	private CustomerController customerController;
 
-    // Initialize mocks
-    public CustomerControllerTest() {
-        MockitoAnnotations.initMocks(this);
-    }
+	// Initialize mocks
+	public CustomerControllerTest() {
+		MockitoAnnotations.initMocks(this);
+	}
 
-    @Test
-    public void testCreateCustomer_Success() {
-        CustomerDto requestDto = new CustomerDto("John Doe", "john@example.com", "22-07-1992", "developer","NA");
-        CustomerDto processedCustomer = new CustomerDto();
-        processedCustomer.setName(requestDto.getName());
-        processedCustomer.setEmail(requestDto.getEmail());
-        processedCustomer.setDob(requestDto.getDob());
-        processedCustomer.setOccupation(requestDto.getOccupation());
-        processedCustomer.setCustomerGroup("developer");
+	@Test
+	public void testCreateCustomer_Success() {
+		CustomerDto requestDto = new CustomerDto("John Doe", "john@example.com", "22-07-1992", "developer", "NA");
+		CustomerDto processedCustomer = new CustomerDto();
+		processedCustomer.setName(requestDto.getName());
+		processedCustomer.setEmail(requestDto.getEmail());
+		processedCustomer.setDob(requestDto.getDob());
+		processedCustomer.setOccupation(requestDto.getOccupation());
+		processedCustomer.setCustomerGroup("developer");
 
-        when(customerService.processCustomerDetails(any(CustomerDto.class))).thenReturn(processedCustomer);
+		when(customerService.processCustomerDetails(any(CustomerDto.class))).thenReturn(processedCustomer);
 
-        ResponseEntity<CustomerDto> responseEntity = customerController.createCustomer(requestDto);
+		ResponseEntity<CustomerDto> responseEntity = customerController.createCustomer(requestDto);
 
-        verify(customerService, times(1)).processCustomerDetails(any(CustomerDto.class));
+		verify(customerService, times(1)).processCustomerDetails(any(CustomerDto.class));
 
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(processedCustomer, responseEntity.getBody());
-    }
+		assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
+		assertEquals(processedCustomer, responseEntity.getBody());
+	}
 }

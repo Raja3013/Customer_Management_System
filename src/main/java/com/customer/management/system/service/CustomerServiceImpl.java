@@ -21,35 +21,32 @@ public class CustomerServiceImpl implements CustomerService {
 
 	public CustomerDto processCustomerDetails(CustomerDto customerDto) {
 		// Validate DOB
-        if (validateDOB(customerDto.getDob())) {
-            throw new IllegalArgumentException("Customer must be 18 years or older.");
-        }
+		if (validateDOB(customerDto.getDob())) {
+			throw new IllegalArgumentException("Customer must be 18 years or older.");
+		}
 
 		// Assign customer group based on rules
-		customerDto.setCustomerGroup(assignCustomerGroup(customerDto.getEmail(),
-				customerDto.getOccupation()));
+		customerDto.setCustomerGroup(assignCustomerGroup(customerDto.getEmail(), customerDto.getOccupation()));
 
 		// Check for email uniqueness
-        if (customerRepository.findByEmail(customerDto.getEmail()) != null) {
-            throw new IllegalArgumentException("Email already exists.");
-        }
-        
-        // Check for uniqueness based on occupation, DOB, and customer group
-        if (customerRepository.findByOccupationAndDobAndCustomerGroup(
-        		customerDto.getOccupation(),
-        		customerDto.getDob(),
-        		customerDto.getCustomerGroup()) != null) {
-            throw new IllegalArgumentException("Duplicate entry based on occupation, DOB, and customer group.");
-        }
+		if (customerRepository.findByEmail(customerDto.getEmail()) != null) {
+			throw new IllegalArgumentException("Email already exists.");
+		}
 
-		CustomerEntity customerEntity= customerDtoToCustomerEntity(customerDto);
+		// Check for uniqueness based on occupation, DOB, and customer group
+		if (customerRepository.findByOccupationAndDobAndCustomerGroup(customerDto.getOccupation(), customerDto.getDob(),
+				customerDto.getCustomerGroup()) != null) {
+			throw new IllegalArgumentException("Duplicate entry based on occupation, DOB, and customer group.");
+		}
+
+		CustomerEntity customerEntity = customerDtoToCustomerEntity(customerDto);
 		return CustomerEntitytoDto(customerRepository.save(customerEntity));
 	}
 
 	private boolean validateDOB(String dob) {
 		// Implement logic to check if the customer is below 18
 		// Return true if below 18, false otherwise
-		SimpleDateFormat dateFormat=new SimpleDateFormat("dd-MM-YYYY");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
 		Date customerDate = null;
 		try {
 			customerDate = dateFormat.parse(dob);
